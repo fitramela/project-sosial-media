@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tag List</title>
+</head>
+<body>
+    <center>
+        <h1>Tag List</h1>
+        <br>
+        <a href="/addTag"><button>Add Tag</button></a>
+        <br>
+        <table border="1">
+            <tr>
+                <th>No.</th>
+                <th>Name Tag</th>
+            </tr>
+            <% data.forEach((el, i) => { %>
+             <tr>
+                <td><%= i + 1 %></td>
+                <td><%= el.nameTag %></td>
+             </tr>
+            <% }) %>
+        </table>
+    </center>
+</body>
+</html>
