@@ -59,7 +59,8 @@ app.get('/homeLanding1', Controller.homeLanding1)
 
 
 app.get('/UserProfile', Controller.UserProfile)
-app.get('/editUserProfile', Controller.UserProfile)
+app.get('/editUserProfile', Controller.editUserProfile)
+app.post('/editUserProfile', Controller.postEditUserProfile)
 
 
 
@@ -72,6 +73,7 @@ app.get('/like/:id', Controller.likePost )
 // app.get('/', (req, res) => {
 //   res.send('Hello World!')
 // })
+app.get('/logout', Controller.logout)
 
 
 

@@ -13,13 +13,70 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Post.belongsTo(models.User , {foreignKey: 'UserId'}),
       Post.hasMany(models.PostTag , { foreignKey : 'PostId'})
+      Post.belongsToMany(models.Tag, { through: models.PostTag })
     }
   }
   Post.init({
-    imgUrl: DataTypes.STRING,
-    title: DataTypes.STRING,
-    caption: DataTypes.STRING,
-    UserId: DataTypes.INTEGER,
+    imgUrl: {
+      type : DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg : 'Image URL harus diisi!'
+        },
+        notEmpty: {
+          msg : 'Image URL harus diisi!'
+        },
+        isUrl: {
+          msg : 'Masukkan URL yang valid!'
+        }
+      }
+    },
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg : 'Title harus diisi!'
+        },
+        notEmpty: {
+          msg : 'Title harus diisi!'
+        },
+        len: {
+          args: [3, 20],
+          msg : 'Minimal 3 karakter dan maksimal 20 karakter'
+        }
+      }
+    },
+
+    caption: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg : 'Caption harus diisi!'
+        },
+        notEmpty: {
+          msg : 'Caption harus diisi!'
+        },
+        len: {
+          args: [8, 100],
+          msg : 'Panjang minimal 8 karakter dan maksimal 100 karakter'
+        }
+      }
+    },
+    UserId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg : 'UserId harus diisi!'
+        },
+        notEmpty: {
+          msg : 'UserId harus diisi!'
+        }
+      }
+    },
     like: DataTypes.INTEGER
   }, {
     sequelize,

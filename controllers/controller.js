@@ -40,7 +40,7 @@ class Controller{
     }
     static async loginPagePost(req,res){
         try {
-            
+            // return res.redirect('/homeLanding1' )  // ingat!!! jgn lupa di unkomen
             const {email, password} = req.body
 
            let user =  await User.findOne({
@@ -110,16 +110,43 @@ class Controller{
     static async UserProfile(req,res){
         try {
            
+
             let data  =  await UserProfile.findOne({where: {UserId : req.session.userId},
             include: User})
-            let dataPost = await User.findAll({where:{ id : req.session.userId},
-            include : Post})
-            // res.send(dataPost)
-            res.render('UserProfile', {data , dataPost})
+            // let dataPost = await User.findAll({where:{ id : req.session.userId},
+            // include : Post})
+            // res.send(dataPost.Post)
+            // console.log(dataPost.Post)
+            res.render('UserProfile', {data})
         } catch (error) {
             res.send(error)
         }
     }
+
+
+    static async editUserProfile(req,res){
+        try {
+            let data = await UserProfile.findOne({where : {UserId : req.session.userId}})
+            // res.send(data)
+            res.render('editUserProfile' ,{data})
+        } catch (error) {
+            res.send(error)
+        }
+    }
+
+    static async postEditUserProfile(req,res){
+        try {
+            let {fullName , city, job,height , weight } = req.body
+
+            await UserProfile.update({fullName , city, job,height , weight } ,{where :{UserId : req.session.userId }})
+            res.redirect('/UserProfile')
+        } catch (error) {
+            res.send(error)
+        }
+    }
+
+
+
 
 
 
@@ -161,6 +188,25 @@ class Controller{
         }
     }
 
+
+
+
+
+    static async logout(req,res){
+        try {
+            req.session.destroy(err=>{
+                if (err){
+                    res.send(err)
+                }else{
+                    res.redirect('/')
+                }
+            })
+
+
+        } catch (error) {
+            res.send(error)
+        }
+    }
 
     
 }
