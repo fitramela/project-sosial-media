@@ -1,0 +1,32 @@
+[
+    {
+        "imgUrl": "http://arah.in/memes-1",
+        "title": "Animals",
+        "caption": "It's so fluffy I'm gonna die!",
+        "UserId" : 1
+    },
+    {
+        "imgUrl" : "http://arah.in/memes-2",
+        "title": "Technology",
+        "caption": "Tech, programming, IT related",
+        "UserId" : 1
+    },
+    {
+        "imgUrl" :"http://arah.in/memes-3",
+        "title": "Anime & Manga",
+        "caption": "Weeb rule the world",
+        "UserId" : 1
+    },
+    {
+        "imgUrl" : "http://arah.in/memes-4",
+        "title": "School",
+        "caption": "Its happy to be young",
+        "UserId" : 1
+    },
+    {
+        "imgUrl" :"http://arah.in/memes-5",
+        "title": "Random",
+        "caption": "Why so serious",
+        "UserId" : 1
+    }
+  ]
