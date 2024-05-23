@@ -96,6 +96,22 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
+    role: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg : 'Role harus diisi!'
+        },
+        notEmpty: {
+          msg : 'Role harus diisi!'
+        },
+        isIn: {
+          args: [['Admin', 'User']],
+          msg : 'Role hanya Admin dan User saja!'
+        }
+      }
+    }
   }, {
     hooks:{
       beforeCreate(instance){
