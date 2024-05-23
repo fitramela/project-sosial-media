@@ -1,5 +1,6 @@
 const {User, UserProfile , Post, Tag} = require('../models')
 const bcrypt = require('bcryptjs');
+const {Op} = require('sequelize')
 
 
 class Controller{
@@ -51,7 +52,7 @@ class Controller{
 
 
                     const isValidPassword = bcrypt.compareSync(password, user.password);
-                    console.log(isValidPassword)
+                    // console.log(isValidPassword)
                     if (isValidPassword){
                         // console.log(user.id + 'iniii')
                         req.session.userId = user.id
@@ -82,7 +83,7 @@ class Controller{
             let {email} = req.params
 
             let {search} = req.query
-            
+            console.log(search)
 
             let option = {
                 where :{},
@@ -111,8 +112,10 @@ class Controller{
            
             let data  =  await UserProfile.findOne({where: {UserId : req.session.userId},
             include: User})
-            // res.send(data)
-            res.render('UserProfile', {data})
+            let dataPost = await User.findAll({where:{ id : req.session.userId},
+            include : Post})
+            // res.send(dataPost)
+            res.render('UserProfile', {data , dataPost})
         } catch (error) {
             res.send(error)
         }
