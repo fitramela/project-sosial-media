@@ -22,8 +22,40 @@ module.exports = (sequelize, DataTypes) => {
   }
   User.init({
     userName: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: {
+        msg : 'Email tersebut sudah terdaftar!'
+      },
+      validate: {
+        notNull: {
+          msg : 'Email harus diisi bro!'
+        },
+        notEmpty: {
+          msg : 'Email harus diisi bro!'
+        },
+        isEmail: {
+          msg : 'Harus input email yang valid bro!'
+        }
+      }
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'Password harus diisi bro!'
+        },
+        notEmpty: {
+          msg : 'Password harus diisi bro!'
+        },
+        len: {
+          args: [10, 25],
+          msg : 'Panjang password 10 sampai 25 karakter!'
+        }
+      }
+    },
     gender: DataTypes.STRING,
     role: DataTypes.STRING,
   }, {

@@ -44,13 +44,13 @@ class Controller{
 
             res.redirect('/')
         } catch (error) {
-            // if (error.name === "SequelizeValidationError"){
-            //     let msg = error.errors.map( el => el.message)
-            //     res.redirect(`/register?errors=${msg}`   )
-            // } else {
+            if (error.name === "SequelizeValidationError"){
+                let msg = error.errors.map( el => el.message)
+                res.redirect(`/register?errors=${msg}`   )
+            } else {
 
                 res.send(error)
-            // }
+            }
         }
     }
 
