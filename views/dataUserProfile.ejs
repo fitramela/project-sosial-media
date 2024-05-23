@@ -8,31 +8,41 @@
   </head>
   <body>
     <%- include('_navBar')%>
-    <h1>UserProfile</h1>
+    <div class="container">
 
+        <h1>UserProfile</h1>
+        <% if (deleted) { %>
+            <p style="color: red;">User <%= deleted %> removed</p>
+        <% } %>
+    </div>
 
 
     <table class="table table-striped container my-5">
+        
         <tr>
             <th>fullName</th>
-            <th>userName</th>
-            <th>email</th>
             <th>city</th>
             <th>job</th>
             <th>height</th>
             <th>weight</th>
             <th>age</th>
+            <th>action</th>
         </tr>
-         <tr>
-            <td><%= data.fullName %></td>
-            <td><%= data.User.userName %></td>
-            <td><%= data.User.email %></td>
-            <td><%= data.city %></td>
-            <td><%= data.job %></td>
-            <td><%= addCmToHeight(data.height) %></td>
-            <td><%= addKgToWeight(data.weight) %></td>
-            <td><%= data.formatAge %></td>
-         </tr>
+        <% data.forEach(data => { %>
+            <tr>
+                <td><%= data.fullName %></td>
+                <td><%= data.city %></td>
+                <td><%= data.job %></td>
+                <td><%= data.height %></td>
+                <td><%= data.weight %></td>
+                <td><%= data.age %></td>
+                <td>
+                    <a href="/deleteUserProfile/<%= data.id %>">
+                        <button type="button" class="btn btn-danger">Delete</button>
+                    </a>
+                </td>
+            </tr>
+            <% }) %>
 
       </table>
       

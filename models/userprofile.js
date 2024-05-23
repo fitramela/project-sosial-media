@@ -15,11 +15,11 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     formatEditDate() {
-      return this.BirthOfDate.toISOString().split('T')[0]
+      return this.birthOfDate.toISOString().split('T')[0]
     }
 
     get formatAge() {
-      const tahunLahir = new Date(this.BirthOfDate).getFullYear();
+      const tahunLahir = new Date(this.birthOfDate).getFullYear();
       const tahunSekarang = new Date().getFullYear();
       return tahunSekarang - tahunLahir;
     }
@@ -28,106 +28,14 @@ module.exports = (sequelize, DataTypes) => {
 
   }
   UserProfile.init({
-    fullName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notNull: {
-          msg : 'Fullname harus diisi bro!'
-        },
-        notEmpty: {
-          msg : 'Fullname harus diisi bro!'
-        },
-        len: {
-          args: [3, 25],
-          msg : 'Karakter Fullname minimal 3 dan maksimal 25'
-        }
-      }
-    },
-    city: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notNull: {
-          msg : 'City harus diisi!'
-        },
-        notEmpty: {
-          msg : 'City harus diisi!'
-        },
-        len: {
-          args: [2, 25],
-          msg: 'Panjang karakter city dari minimal 2 dan maksimal 25'
-        }
-      }
-    },
+    fullName: DataTypes.STRING,
+    city: DataTypes.STRING,
     age: DataTypes.INTEGER,
-    job: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notNull: {
-          msg : 'Job harus diisi!'
-        },
-        notEmpty: {
-          msg : 'Job harus diisi!'
-        },
-        len: {
-          args: [2, 25],
-          msg: 'Panjang karakter Job dari minimal 2 dan maksimal 25'
-        }
-      }
-    },
-    height: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notNull: {
-          msg : 'Height harus diisi!'
-        },
-        notEmpty: {
-          msg : 'Height harus diisi!'
-        },
-        isNumeric: {
-          msg : 'Inputan harus angka!'
-        },
-        min: {
-          args: [0],
-          msg : 'Inputan tidak boleh 0'
-        }
-      }
-    },
-    weight: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notNull: {
-          msg : 'Weight harus diisi!'
-        },
-        notEmpty: {
-          msg : 'Weight harus diisi!'
-        },
-        isNumeric: {
-          msg : 'Inputan harus angka!'
-        },
-        min: {
-          args: [0],
-          msg : 'Inputan tidak boleh 0'
-        }
-      }
-    },  birthOfDate: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      validate: {
-        notNull: {
-          msg : 'BirthOfDate harus diisi!'
-        },
-        notEmpty: {
-          msg : 'BirthOfDate harus diisi!'
-        },
-        isBefore: new Date().toISOString().split('T')[0]
-      }
-    },
-    UserId: DataTypes.INTEGER
+    job: DataTypes.STRING,
+    height: DataTypes.INTEGER,
+    weight: DataTypes.INTEGER,
+    UserId: DataTypes.INTEGER,
+    birthOfDate: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'UserProfile',

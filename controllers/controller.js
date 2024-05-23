@@ -1,6 +1,10 @@
 const {User, UserProfile , Post, Tag} = require('../models')
 const bcrypt = require('bcryptjs');
 const {Op} = require('sequelize')
+const transporter = require('../email'); // Mengimpor konfigurasi Nodemailer
+
+const { addCmToHeight, addKgToWeight} = require('../helper/helper')
+
 
 
 class Controller{
@@ -14,19 +18,39 @@ class Controller{
     }
     static async registerForm(req,res){
         try {
-            res.render('registerForm')
+            let {errors} = req.query
+            res.render('registerForm' , {errors}) //masukkan {error}
         } catch (error) {
             res.send(error)
         }
     }
     static async registerPost(req,res){
         try {
-            let {userName , email , password , gender} = req.body
+            let {userName , email , password , gender , role} = req.body
 
-            await User.create({userName , email , password ,gender})
+            await User.create({userName , email , password ,gender ,role})
+
+             // Kirim email konfirmasi
+             const mailOptions = {
+                from: 'yourdatingapps@gmail.com', // Ganti dengan alamat email Anda
+                to: email, // Alamat email penerima (alamat pengguna yang baru mendaftar)
+                subject: 'Selamat, Anda Telah Terdaftar!',
+                text: `Halo ${userName},\n\nSelamat datang di aplikasi kami. Anda telah berhasil mendaftar!`
+                };
+    
+                await transporter.sendMail(mailOptions); // Mengirim email
+    
+
+
             res.redirect('/')
         } catch (error) {
-            res.send(error)
+            // if (error.name === "SequelizeValidationError"){
+            //     let msg = error.errors.map( el => el.message)
+            //     res.redirect(`/register?errors=${msg}`   )
+            // } else {
+
+                res.send(error)
+            // }
         }
     }
 
@@ -56,6 +80,7 @@ class Controller{
                     if (isValidPassword){
                         // console.log(user.id + 'iniii')
                         req.session.userId = user.id
+                        req.session.role = user.role
                         return res.redirect('/homeLanding1' )
                     } else {
                         const error = 'Invalid email/password'
@@ -117,7 +142,7 @@ class Controller{
             // include : Post})
             // res.send(dataPost.Post)
             // console.log(dataPost.Post)
-            res.render('UserProfile', {data})
+            res.render('UserProfile', {data,addCmToHeight, addKgToWeight})
         } catch (error) {
             res.send(error)
         }
@@ -152,7 +177,8 @@ class Controller{
 
     static async addPost(req,res){
         try {
-            res.render('formAddPost')
+            let dataTag = await Tag.findAll();
+            res.render('formAddPost' , {dataTag})
         } catch (error) {
             res.send(error)
         }
@@ -163,8 +189,17 @@ class Controller{
     static async postAddPost(req,res){
         try { 
             let id = req.session.userId
-            let { imgUrl , title, caption} = req.body
-            await Post.create({imgUrl , title, caption ,UserId : id , like :0})
+            let { imgUrl , title, caption, tags} = req.body
+            let UserId = req.session.userId;
+            const posting = await Post.create({imgUrl , title, caption ,UserId : id , like :0 , UserId})
+
+            if (tags && tags.length > 0) {
+                const tagInstances = await Tag.findAll({
+                  where: { id: tags }
+                });
+                await posting.addTags(tagInstances);
+              }
+
 
             res.redirect('/homeLanding1')
         } catch (error) {
@@ -208,6 +243,50 @@ class Controller{
         }
     }
 
-    
+
+    static async landingPage(req,res){
+        try {
+            res.render('landingPage')
+        } catch (error) {
+            res.send(error)
+        }
+    }
+
+
+
+    // admin
+
+    static async dataUserProfile(req,res){
+        try {
+            let data =  await UserProfile.findAll()
+            const { deleted } = req.query;
+            res.render('dataUserProfile' , {data, deleted})
+        } catch (error) {
+            res.send(error)
+        }
+    }
+
+    static async deleteUserProfile(req,res){
+        try {let {id} = req.params 
+            // let userId = req.session.userId;
+                console.log(id)
+            let dataUser = await UserProfile.findOne({
+                where: {
+                    id
+                },
+            });
+            // console.log(dataUser)
+            // res.send(dataUser)
+            let name = `${dataUser.fullName}`;
+            await UserProfile.destroy({where : id})
+
+            res.redirect(`/dataUserProfile?deleted=${name}`)
+        } catch (error) {
+            res.send(error)
+        }
+    }
+
+
+
 }
 module.exports = Controller

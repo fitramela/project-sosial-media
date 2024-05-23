@@ -17,67 +17,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Post.init({
-    imgUrl: {
-      type : DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notNull: {
-          msg : 'Image URL harus diisi!'
-        },
-        notEmpty: {
-          msg : 'Image URL harus diisi!'
-        },
-        isUrl: {
-          msg : 'Masukkan URL yang valid!'
-        }
-      }
-    },
-    title: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notNull: {
-          msg : 'Title harus diisi!'
-        },
-        notEmpty: {
-          msg : 'Title harus diisi!'
-        },
-        len: {
-          args: [3, 20],
-          msg : 'Minimal 3 karakter dan maksimal 20 karakter'
-        }
-      }
-    },
-
-    caption: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notNull: {
-          msg : 'Caption harus diisi!'
-        },
-        notEmpty: {
-          msg : 'Caption harus diisi!'
-        },
-        len: {
-          args: [8, 100],
-          msg : 'Panjang minimal 8 karakter dan maksimal 100 karakter'
-        }
-      }
-    },
-    UserId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notNull: {
-          msg : 'UserId harus diisi!'
-        },
-        notEmpty: {
-          msg : 'UserId harus diisi!'
-        }
-      }
-    },
+    imgUrl: DataTypes.STRING,
+    title: DataTypes.STRING,
+    caption: DataTypes.STRING,
+    UserId: DataTypes.INTEGER,
     like: DataTypes.INTEGER
+    
   }, {
     sequelize,
     modelName: 'Post',

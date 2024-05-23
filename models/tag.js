@@ -12,28 +12,11 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Tag.hasMany(models.PostTag , {foreignKey: 'TagId'})
+      Tag.belongsToMany(models.Post, { through: models.PostTag })
     }
   }
   Tag.init({
-    nameTag: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notNull: {
-          msg : 'Tag harus diisi!'
-        },
-        notEmpty: {
-          msg : 'Tag harus diisi!'
-        },
-        isAlpha: {
-          msg : 'Inputan harus huruf!'
-        },
-        len: {
-          args: [2, 20],
-          msg : 'Minimal inputan 2 karakter dan maksimal 20 karakter'
-        }
-      }
-    }
+    nameTag: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Tag',

@@ -25,7 +25,15 @@
             <input name="caption" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
             <div id="emailHelp" class="form-text">input your Posts Caption</div>
           </div>
-          
+
+         
+        <% dataTag.forEach(tag=> { %>
+            <div class="form-check form-switch">
+                <input  name="tags" value="<%= tag.id %>" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                <label class="form-check-label" for="flexSwitchCheckDefault"> <%= tag.nameTag %></label>
+            </div>
+            
+            <% }) %>
 
 
           <button type="submit" class="btn btn-primary">ADD</button>
